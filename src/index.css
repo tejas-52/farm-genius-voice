@@ -1,0 +1,330 @@
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* KrishiMitra HD - Premium Climate-Tech Palette */
+    /* Deep Green: #0B3D2E → hsl(161, 72%, 14%) */
+    /* Electric Green: #7CFF00 → hsl(89, 100%, 50%) */
+    /* Charcoal Black: #0F172A → hsl(222, 47%, 11%) */
+    /* Pure White: #FFFFFF → hsl(0, 0%, 100%) */
+
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Deep forest green - premium */
+    --primary: 161 72% 14%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Light sage cream */
+    --secondary: 160 30% 98%;
+    --secondary-foreground: 161 72% 14%;
+
+    /* Soft neutral */
+    --muted: 160 10% 96%;
+    --muted-foreground: 222 20% 45%;
+
+    /* Electric green accent */
+    --accent: 89 100% 50%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 161 30% 92%;
+    --input: 161 30% 94%;
+    --ring: 161 72% 14%;
+
+    --radius: 1.25rem;
+
+    /* Sustainability tokens */
+    --eco: 152 70% 40%;
+    --eco-light: 152 60% 96%;
+    --solar: 45 95% 55%;
+    --solar-light: 45 90% 96%;
+    --water: 200 85% 50%;
+    --water-light: 200 80% 96%;
+    --soil: 28 60% 45%;
+    --soil-light: 28 50% 96%;
+
+    /* Status colors */
+    --success: 152 70% 40%;
+    --warning: 45 95% 55%;
+    --info: 200 85% 50%;
+
+    /* Premium gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(161 72% 14%) 0%, hsl(161 60% 25%) 50%, hsl(89 100% 50% / 0.15) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(160 30% 99%) 100%);
+    --gradient-eco: linear-gradient(135deg, hsl(152 70% 40%) 0%, hsl(152 80% 50%) 50%, hsl(89 100% 50%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(161 72% 14%) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+
+    /* HD Shadows */
+    --shadow-soft: 0 2px 12px -2px hsl(222 47% 11% / 0.04), 0 4px 20px -4px hsl(222 47% 11% / 0.06);
+    --shadow-card: 0 4px 16px -4px hsl(222 47% 11% / 0.06), 0 12px 32px -8px hsl(222 47% 11% / 0.1);
+    --shadow-elevated: 0 10px 30px -5px hsl(222 47% 11% / 0.1), 0 25px 50px -15px hsl(222 47% 11% / 0.15);
+    --shadow-glow: 0 0 40px hsl(89 100% 50% / 0.2), 0 0 80px hsl(161 72% 14% / 0.1);
+    --shadow-glow-accent: 0 0 30px hsl(89 100% 50% / 0.4);
+    --shadow-glow-eco: 0 0 30px hsl(152 70% 40% / 0.3);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 161 72% 14%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 160 20% 96%;
+    --sidebar-accent-foreground: 161 72% 14%;
+    --sidebar-border: 160 15% 90%;
+    --sidebar-ring: 161 72% 14%;
+  }
+
+  .dark {
+    --background: 222 47% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 222 40% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 89 100% 50%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 222 30% 18%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 222 25% 20%;
+    --muted-foreground: 222 15% 60%;
+
+    --accent: 161 72% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 25% 20%;
+    --input: 222 25% 18%;
+    --ring: 89 100% 50%;
+
+    /* Dark mode eco tokens */
+    --eco: 152 70% 50%;
+    --eco-light: 152 60% 15%;
+    --solar: 45 95% 60%;
+    --solar-light: 45 90% 15%;
+    --water: 200 85% 55%;
+    --water-light: 200 80% 15%;
+    --soil: 28 60% 55%;
+    --soil-light: 28 50% 15%;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 89 100% 50%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 30% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 222 25% 20%;
+    --sidebar-ring: 89 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    line-height: 1.1;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+    line-height: 1.2;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+    line-height: 1.3;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-3xl border border-white/40 rounded-3xl relative overflow-hidden;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card::before {
+    content: '';
+    background: var(--gradient-glass);
+    @apply absolute inset-0 opacity-50;
+    pointer-events: none;
+  }
+
+  .glass-card-elevated {
+    @apply bg-white/80 backdrop-blur-3xl border border-white/50 rounded-[2rem] relative overflow-hidden;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .glass-card-elevated::after {
+    content: '';
+    @apply absolute inset-0 opacity-[0.03];
+    background-image: radial-gradient(circle at 2px 2px, black 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-eco {
+    background: var(--gradient-eco);
+  }
+
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-eco {
+    background: var(--gradient-eco);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-accent {
+    box-shadow: var(--shadow-glow-accent);
+  }
+
+  /* Sustainability Box Styles */
+  .eco-box {
+    @apply rounded-2xl border-2 p-4;
+    background: linear-gradient(135deg, hsl(var(--eco-light)) 0%, hsl(var(--water-light)) 100%);
+    border-color: hsl(var(--eco) / 0.3);
+  }
+
+  .eco-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+    background: hsl(var(--eco-light));
+    color: hsl(var(--eco));
+  }
+
+  .solar-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+    background: hsl(var(--solar-light));
+    color: hsl(var(--solar));
+  }
+
+  .water-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+    background: hsl(var(--water-light));
+    color: hsl(var(--water));
+  }
+
+  .soil-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+    background: hsl(var(--soil-light));
+    color: hsl(var(--soil));
+  }
+
+  /* HD Button Styles */
+  .btn-hd {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-hd::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(180deg, hsl(0 0% 100% / 0.1) 0%, transparent 100%);
+  }
+
+  .btn-hd:hover::before {
+    @apply opacity-100;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 20px hsl(89 100% 50% / 0.2);
+    }
+
+    to {
+      box-shadow: 0 0 40px hsl(89 100% 50% / 0.4);
+    }
+  }
+
+  /* High contrast text utilities */
+  .text-contrast {
+    text-shadow: 0 1px 2px hsl(222 47% 11% / 0.1);
+  }
+}

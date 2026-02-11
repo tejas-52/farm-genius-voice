@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API & Voice Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+        .success {
+            color: green;
+            margin: 10px 0;
+        }
+        #output {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 KrishiMitra API & Voice Diagnostics</h1>
+    
+    <!-- API Test Section -->
+    <div class="section">
+        <h2>1. API Connection Test</h2>
+        <p><strong>Supabase URL:</strong> <span id="supabaseUrl"></span></p>
+        <p><strong>API Endpoint:</strong> <span id="apiEndpoint"></span></p>
+        <button onclick="testAPI()">Test API Connection</button>
+        <div id="apiResult"></div>
+    </div>
+
+    <!-- Voice Test Section -->
+    <div class="section">
+        <h2>2. Voice/Microphone Test</h2>
+        <p><strong>Browser Support:</strong> <span id="voiceSupport"></span></p>
+        <button onclick="testMicrophone()">Test Microphone Permission</button>
+        <button onclick="testSpeechRecognition()">Test Speech Recognition</button>
+        <button onclick="testTextToSpeech()">Test Text-to-Speech</button>
+        <div id="voiceResult"></div>
+    </div>
+
+    <!-- Output Console -->
+    <div class="section">
+        <h2>3. Console Output</h2>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        // Configuration
+        const SUPABASE_URL = 'https://lwrkeinssfunbemlcuyt.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3cmtlaW5zc2Z1bmJlbWxjdXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0NTcxMzUsImV4cCI6MjA4MjAzMzEzNX0.Yinvf2GyqizyrjyDtmBxEEreQ5Eu8nAunBX7OhUhNOA';
+        const CHAT_URL = `${SUPABASE_URL}/functions/v1/chat`;
+
+        // Display config
+        document.getElementById('supabaseUrl').textContent = SUPABASE_URL;
+        document.getElementById('apiEndpoint').textContent = CHAT_URL;
+
+        // Logging function
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            output.innerHTML += `<div style="color: ${color}">[${timestamp}] ${message}</div>`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Test API Connection
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<p>Testing API connection...</p>';
+            log('Starting API test...');
+
+            try {
+                log(`Sending request to: ${CHAT_URL}`);
+                
+                const response = await fetch(CHAT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            { role: 'user', content: 'Hello, this is a test message' }
+                        ]
+                    })
+                });
+
+                log(`Response status: ${response.status} ${response.statusText}`);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`Error response: ${errorText}`, 'error');
+                    resultDiv.innerHTML = `<p class="error">❌ API Error: ${response.status} - ${errorText}</p>`;
+                    return;
+                }
+
+                // Try to read the stream
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let receivedData = '';
+
+                log('Reading stream...');
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    receivedData += chunk;
+                    log(`Received chunk: ${chunk.substring(0, 100)}...`);
+                }
+
+                log(`Total data received: ${receivedData.length} characters`, 'success');
+                resultDiv.innerHTML = `<p class="success">✅ API Connection Successful!</p><p>Received ${receivedData.length} characters</p>`;
+
+            } catch (error) {
+                log(`API Test Failed: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<p class="error">❌ Connection Failed: ${error.message}</p>`;
+            }
+        }
+
+        // Check voice support
+        function checkVoiceSupport() {
+            const hasRecognition = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+            const hasSynthesis = 'speechSynthesis' in window;
+            
+            let support = '';
+            if (hasRecognition) support += '✅ Speech Recognition ';
+            else support += '❌ Speech Recognition ';
+            
+            if (hasSynthesis) support += '✅ Text-to-Speech';
+            else support += '❌ Text-to-Speech';
+            
+            document.getElementById('voiceSupport').innerHTML = support;
+            log(`Voice support: Recognition=${hasRecognition}, Synthesis=${hasSynthesis}`);
+        }
+
+        // Test microphone permission
+        async function testMicrophone() {
+            const resultDiv = document.getElementById('voiceResult');
+            resultDiv.innerHTML = '<p>Testing microphone access...</p>';
+            log('Testing microphone permission...');
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                log('Microphone permission granted!', 'success');
+                resultDiv.innerHTML = '<p class="success">✅ Microphone Access Granted!</p>';
+                
+                // Stop the stream
+                stream.getTracks().forEach(track => track.stop());
+            } catch (error) {
+                log(`Microphone error: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<p class="error">❌ Microphone Error: ${error.message}</p>`;
+            }
+        }
+
+        // Test speech recognition
+        function testSpeechRecognition() {
+            const resultDiv = document.getElementById('voiceResult');
+            log('Testing speech recognition...');
+
+            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+                resultDiv.innerHTML = '<p class="error">❌ Speech Recognition not supported in this browser</p>';
+                log('Speech Recognition not supported', 'error');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-IN';
+            recognition.interimResults = true;
+
+            resultDiv.innerHTML = '<p>🎤 Listening... Speak now!</p>';
+            log('Speech recognition started');
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                log(`Recognized: "${transcript}"`, 'success');
+                resultDiv.innerHTML = `<p class="success">✅ Heard: "${transcript}"</p>`;
+            };
+
+            recognition.onerror = (event) => {
+                log(`Recognition error: ${event.error}`, 'error');
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${event.error}</p>`;
+            };
+
+            recognition.onend = () => {
+                log('Recognition ended');
+            };
+
+            recognition.start();
+        }
+
+        // Test text-to-speech
+        function testTextToSpeech() {
+            const resultDiv = document.getElementById('voiceResult');
+            log('Testing text-to-speech...');
+
+            if (!('speechSynthesis' in window)) {
+                resultDiv.innerHTML = '<p class="error">❌ Text-to-Speech not supported</p>';
+                log('Text-to-Speech not supported', 'error');
+                return;
+            }
+
+            const utterance = new SpeechSynthesisUtterance('Hello, this is a test of text to speech');
+            utterance.lang = 'en-IN';
+            
+            utterance.onstart = () => {
+                log('Speech started', 'success');
+                resultDiv.innerHTML = '<p class="success">🔊 Speaking...</p>';
+            };
+
+            utterance.onend = () => {
+                log('Speech ended', 'success');
+                resultDiv.innerHTML = '<p class="success">✅ Text-to-Speech works!</p>';
+            };
+
+            utterance.onerror = (event) => {
+                log(`Speech error: ${event.error}`, 'error');
+                resultDiv.innerHTML = `<p class="error">❌ Error: ${event.error}</p>`;
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Initialize
+        checkVoiceSupport();
+        log('Diagnostic page loaded');
+    </script>
+</body>
+</html>
