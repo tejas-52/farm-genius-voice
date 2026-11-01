@@ -81,7 +81,7 @@
     <script>
         // Configuration
         const SUPABASE_URL = 'https://lwrkeinssfunbemlcuyt.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3cmtlaW5zc2Z1bmJlbWxjdXl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0NTcxMzUsImV4cCI6MjA4MjAzMzEzNX0.Yinvf2GyqizyrjyDtmBxEEreQ5Eu8nAunBX7OhUhNOA';
+        const SUPABASE_KEY = window.prompt('Supabase anon key') || '';
         const CHAT_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
         // Display config
